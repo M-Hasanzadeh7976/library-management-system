@@ -1,4 +1,3 @@
-// js/dashboard.js (مختص dashboard.html)
 requireAuthOrRedirect();
 
 var nameEl = document.querySelector("#studentName") || document.querySelector(".student-name");
@@ -9,12 +8,10 @@ var loadingEl = document.querySelector("#dashLoading") || document.querySelector
 function loadProfileAndStats() {
   if (loadingEl) { loadingEl.style.display = "block"; try { if (!loadingEl.innerText) loadingEl.innerText = "در حال بارگذاری..."; } catch(e) {} }
 
-  // 1) اطلاعات کاربر
   apiRequest("GET", "/auth/me", null, true, function (me) {
     var fullName = (me && (me.name || me.fullName || (me.user && me.user.name))) || "دانشجو";
     if (nameEl) nameEl.innerText = fullName;
 
-    // 2) تعداد امانت‌های فعال
     apiRequest("GET", "/loans/my-loans", null, true, function (loans) {
       var count = 0;
       if (loans && loans.length) count = loans.length;
@@ -23,7 +20,6 @@ function loadProfileAndStats() {
       if (statLoansEl) statLoansEl.innerText = "-";
     });
 
-    // 3) تعداد کتاب‌های موجود
     apiRequest("GET", "/books", null, true, function (books) {
       var available = 0;
       var i = 0;

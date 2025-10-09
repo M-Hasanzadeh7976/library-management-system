@@ -1,9 +1,6 @@
-// js/utils.js
-// تنظیمات پایه
 var API_BASE = "https://karyar-library-management-system.liara.run/api";
 var TOKEN_COOKIE = "jwt_token";
 
-// --- کوکی ساده ---
 function setCookie(name, value, minutes) {
   var expires = "";
   if (minutes) {
@@ -26,7 +23,6 @@ function deleteCookie(name) {
   document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
 }
 
-// --- درخواست HTTP با XMLHttpRequest (ساده) ---
 function apiRequest(method, path, data, needAuth, onSuccess, onError) {
   var xhr = new XMLHttpRequest();
   xhr.open(method, API_BASE + path, true);
@@ -35,14 +31,12 @@ function apiRequest(method, path, data, needAuth, onSuccess, onError) {
   if (needAuth) {
     var token = getCookie(TOKEN_COOKIE);
     if (!token) {
-      // اگر توکن نداریم و در صفحه لاگین نیستیم، هدایت شویم
       if (location.pathname.indexOf("login.html") === -1) {
         alert("برای ادامه باید وارد شوید.");
         location.href = "login.html";
       }
       return;
     }
-    // هدر طبق توضیحات پروژه: Bearer <token>
     xhr.setRequestHeader("Authorization", "Bearer " + token);
   }
 
@@ -64,7 +58,6 @@ function apiRequest(method, path, data, needAuth, onSuccess, onError) {
   xhr.send(data ? JSON.stringify(data) : null);
 }
 
-// --- محافظت صفحات ---
 function requireAuthOrRedirect() {
   if (!getCookie(TOKEN_COOKIE)) {
     alert("برای مشاهده این صفحه ابتدا وارد شوید.");
@@ -77,7 +70,6 @@ function redirectLoggedInAwayFromLogin() {
   }
 }
 
-// --- خروج ---
 function setupLogout(btnSelector) {
   var btn = document.querySelector(btnSelector);
   if (!btn) return;
@@ -89,12 +81,10 @@ function setupLogout(btnSelector) {
   });
 }
 
-// --- ابزارهای رابط کاربری ساده ---
 function show(el) { if (el) el.style.display = ""; }
 function hide(el) { if (el) el.style.display = "none"; }
 function setText(el, text) { if (el) el.innerText = text; }
 
-// --- کش ساده با localStorage ---
 function cacheSet(key, value) {
   try {
     var data = { ts: Date.now(), value: value };

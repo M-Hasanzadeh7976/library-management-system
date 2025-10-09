@@ -1,4 +1,3 @@
-// js/books.js (مختص books.html)
 requireAuthOrRedirect();
 
 var listEl = document.querySelector("#booksList") || document.querySelector(".books-list") || document.querySelector("ul#books");
@@ -59,7 +58,6 @@ function initBooks() {
   var cached = cacheGetValid(CACHE_KEY, TTL_MS);
   if (cached) {
     renderBooks(cached);
-    // در پس‌زمینه می‌توان تازه‌سازی کرد؛ اما برای سادگی دانشجویی، همین بس است.
   } else {
     loadBooksFromAPI();
   }
@@ -69,27 +67,23 @@ function borrowBook(bookId, btnEl) {
   if (!bookId) return;
   // POST /loans  با { bookId }
   apiRequest("POST", "/loans", { bookId: bookId }, true, function (res) {
-    // موفق: دکمه را غیرفعال و موجودی را کم کنیم
     if (btnEl) {
       btnEl.disabled = true;
       btnEl.innerText = "گرفته شد";
     }
-    // کش را باطل کنیم تا بعداً تازه شود
     cacheInvalidate(CACHE_KEY);
-    alert("کتاب ثبت شد. موفق باشید!");
+    alert("امانت کتاب با موفقیت انجام شد.");
   }, function (err) {
     alert("امانت گرفتن ناموفق.");
   });
 }
 
-// رویداد تفویضی برای دکمه‌های امانت
 if (listEl) {
   listEl.addEventListener("click", function (e) {
     var t = e.target || e.srcElement;
     if (t && t.className && t.className.indexOf("borrowBtn") !== -1) {
       var li = t.closest ? t.closest("li") : null;
       if (!li) {
-        // fallback: دستی والد را بیابیم
         var p = t.parentNode;
         while (p && p.tagName && p.tagName.toLowerCase() !== "li") { p = p.parentNode; }
         li = p;

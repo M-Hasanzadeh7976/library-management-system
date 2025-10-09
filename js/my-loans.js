@@ -1,4 +1,3 @@
-// js/my-loans.js (مختص my-loans.html)
 requireAuthOrRedirect();
 
 var listEl = document.querySelector("#loansList") || document.querySelector(".loans-list") || document.querySelector("ul#loans");
@@ -52,11 +51,8 @@ function loadLoans() {
 function returnLoan(loanId, btnEl) {
   if (!loanId) return;
   apiRequest("POST", "/loans/" + loanId + "/return", {}, true, function (res) {
-    // حذف آیتم از UI
     var li = btnEl;
-    // یافتن li
     if (li) {
-      // اگر btnEl دکمه است، والد li را پیدا کنیم
       var p = li.parentNode;
       while (p && p.tagName && p.tagName.toLowerCase() !== "li") { p = p.parentNode; }
       li = p;
@@ -65,7 +61,6 @@ function returnLoan(loanId, btnEl) {
       li.parentNode.removeChild(li);
     }
     alert("کتاب بازگردانده شد.");
-    // شمارنده را به‌روز کنیم
     var items = listEl ? listEl.children.length : 0;
     if (statEl) statEl.innerText = items + "";
   }, function () {

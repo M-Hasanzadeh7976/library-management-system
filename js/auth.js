@@ -1,8 +1,5 @@
-// js/auth.js (مختص login.html)
-// اسکریپت انتهای body لود می‌شود، پس به DOMContentLoaded نیازی نیست.
 redirectLoggedInAwayFromLogin();
 
-// گرفتن المان‌ها با چند نام رایج تا وابسته به قالب نباشد
 var form = document.querySelector("#loginForm") || document.querySelector("form");
 var emailInput = document.querySelector("#email") || document.querySelector('input[type="email"]') || document.querySelector('input[name="email"]');
 var passInput = document.querySelector("#password") || document.querySelector('input[type="password"]') || document.querySelector('input[name="password"]');
@@ -38,15 +35,12 @@ function doLogin(evt) {
   if (btn) { try { btn.disabled = true; btn.dataset._oldText = btn.innerText; btn.innerText = "در حال ورود..."; } catch(e) {} }
   // درخواست ورود: POST /auth/login (بدون نیاز به توکن)
   apiRequest("POST", "/auth/login", { email: email, password: password }, false, function (json) {
-    // تلاش برای یافتن توکن در ساختارهای احتمالی
     var token = json.token || (json.data && json.data.token) || json.accessToken || json.jwt;
     if (!token) {
       showError("ورود ناموفق. پاسخ نامعتبر از سرور.");
       return;
     }
-    // ذخیره توکن در کوکی (۳ روزه)
     setCookie(TOKEN_COOKIE, token, 60 * 24 * 3);
-    // هدایت به داشبورد
     location.href = "dashboard.html";
   }, function (err, xhr) {
     var msg = (err && (err.message || err.error || err.msg)) ? (err.message || err.error || err.msg) : "ورود ناموفق.";

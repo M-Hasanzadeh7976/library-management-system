@@ -60,7 +60,7 @@ function returnLoan(loanId, btnEl) {
     if (li && li.parentNode) {
       li.parentNode.removeChild(li);
     }
-    alert("کتاب بازگردانده شد.");
+    alert("بازگرداندن کتاب با موفقیت انجام شد.");
     var items = listEl ? listEl.children.length : 0;
     if (statEl) statEl.innerText = items + "";
   }, function () {
